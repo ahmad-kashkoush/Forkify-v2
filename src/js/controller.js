@@ -18,9 +18,19 @@ const timeout = function (s) {
 //bd8a8c43-7123-4d6c-ae61-dce616b99af4
 // show recipe 
 //https:forkify-api.herokuapp.com/api/v2/recipes?search=pizza&key=<insert your key>
+// render spinner
+const renderSpinner = function (parentEl) {
+  const html = `
+  <div class="spinner">
+    <svg>
+      <use href="${icons}#icon-loader"></use>
+    </svg>
+</div>`
+  parentEl.innerHTML = '';
+  parentEl.insertAdjacentHTML('afterbegin', html);
+}
+
 // Render recipe 
-
-
 const renderRecipe = function (recipe) {
 
   const html = `
@@ -120,6 +130,7 @@ const apiKey = `bd8a8c43-7123-4d6c-ae61-dce616b99af4`;
 const showRecipe = async function () {
   try {
     // fetching data
+    renderSpinner(recipeContainer);
     const response = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886`);
     const data = await response.json();
     if (!response.ok)
@@ -139,6 +150,7 @@ const showRecipe = async function () {
       ingredients: recipe.ingredients
     }
     console.log(recipe);
+
     renderRecipe(recipe);
 
 
@@ -147,4 +159,5 @@ const showRecipe = async function () {
   }
 
 }
+
 showRecipe();
