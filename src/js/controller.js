@@ -22,7 +22,7 @@ const timeout = function (s) {
 
 
 const apiKey = `bd8a8c43-7123-4d6c-ae61-dce616b99af4`;
-const showRecipe = async function () {
+const controlRecipe = async function () {
 
   try {
     const id = window.location.hash.slice(1);
@@ -38,9 +38,8 @@ const showRecipe = async function () {
   }
 
 }
-// load recipe when window loads, or changed it's hash
-const events = ['hashchange', 'load'];
-events.forEach(event => {
-  window.addEventListener(event, showRecipe)
-})
-
+// can write in global scope this is better this way
+const init = function () {
+  recipeView.addHanderRender(controlRecipe);
+}
+init();
