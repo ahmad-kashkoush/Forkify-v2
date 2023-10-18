@@ -18,7 +18,9 @@
   "homepage": "https://github.com/ahmad-kashkoush/Forkify-v2#readme",
   "devDependencies": {
     "@parcel/transformer-sass": "^2.10.0",
-    "parcel": "^2.10.0"
+    "core-js": "^3.33.0",
+    "parcel": "^2.10.0",
+    "regenerator-runtime": "^0.14.0"
   },
   "dependencies": {
     "fractional": "^1.0.0"
