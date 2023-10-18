@@ -9,6 +9,27 @@ class RecipeView {
 
         this.#parentEl.insertAdjacentHTML('afterbegin', this.#generateMarkup());
     }
+    // publisher
+    // 1. knows when to handle certain event
+    addHanderRender(handler) {
+        // handler is the `subscriber` and only want to act
+        // load recipe when window loads, or changed it's hash
+        const events = ['hashchange', 'load'];
+        events.forEach(event => {
+            window.addEventListener(event, handler)
+        })
+
+    }
+
+
+
+
+
+
+
+
+
+
     // Render Spinner
     renderSpinner = function () {
         const html = `
