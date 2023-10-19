@@ -2,7 +2,7 @@ import { async } from 'regenerator-runtime'
 import * as model from "./model.js"
 import recipeView from './views/recipeView.js';
 import searchResultsView from './views/searchResultsView.js';
-
+import searchView from './views/searchView.js';
 
 
 
@@ -36,20 +36,21 @@ const controlRecipe = async function () {
 
 const controlSearchResults = async function () {
   try {
-
-    await model.loadSearchResults('pizzzzzzz');
-    if (model.state.searchedRecipes.length == 0)
-      throw ('err');
+    const query = searchView.getQuery();
+    if (!query) return;
+    await model.loadSearchResults(query);
+    if (model.state.searchedRecipes.length === 0)
+      throw ('no query found');
     console.log(model.state.searchedRecipes);
     searchResultsView.render(model.state.searchedRecipes)
   } catch (err) {
     searchResultsView.displayError();
-    console.log(err);
+
   }
 }
 // can write in global scope this is better this way
 const init = function () {
-  recipeView.addHanderRender(controlRecipe);
-  controlSearchResults();
+  recipeView.addHandlerRender(controlRecipe);
+  searchView.addHandlerSearch(controlSearchResults);
 }
 init();

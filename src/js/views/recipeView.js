@@ -12,7 +12,7 @@ class RecipeView {
     }
     // publisher
     // 1. knows when to handle certain event
-    addHanderRender(handler) {
+    addHandlerRender(handler) {
         // handler is the `subscriber` and only want to act
         // load recipe when window loads, or changed it's hash
         const events = ['hashchange', 'load'];

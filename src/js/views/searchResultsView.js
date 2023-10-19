@@ -52,6 +52,7 @@ class SearchResultsView {
         this.#parentEl.insertAdjacentHTML('afterbegin', markup);
 
     }
+
 }
 /* 
 
