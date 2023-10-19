@@ -5,13 +5,15 @@ class searchView {
     #parentEl = document.querySelector('.search')
     getQuery() {
         const value = this.#searchField.value;
-        this.#clear();
+        this._clear();
         return value;
     }
-    #clear() {
+    _clear() {
         this.#searchField.value = '';
     }
     addHandlerSearch(handler) {
+        // used submit instead of click 
+        // to listen to [click, enter] events
         this.#parentEl.addEventListener('submit', function (e) {
             e.preventDefault();
             handler();
@@ -26,6 +28,6 @@ export default new searchView();
  * text be returned from searchView and load search on it
  Todo:
 
-    [] have a subscriber (control search Results)
-    [] 
+    [x] have a subscriber (control search Results)
+    [x] 
  */

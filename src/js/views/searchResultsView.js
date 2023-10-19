@@ -1,19 +1,18 @@
 import icons from 'url:../../img/icons.svg'
-class SearchResultsView {
-    #parentEl = document.querySelector('ul.results');
-    #data;
-    #errorMessage = 'No recipes found for your query! Please try again ;)'
-    #isUserGenerated = false;
-    render(data) {
-        this.#data = data;
-        this.#clear();
-        this.#parentEl.insertAdjacentHTML('afterbegin', this.#generateMarkup());
+import View from './view.js'
+class SearchResultsView extends View {
+    #isUserGenerated;
+    constructor() {
+        super();
+        this._parentEl = document.querySelector('ul.results');
+        this._data;
+        this._errorMessage = 'No recipes found for your query! Please try again ;)'
+        this.#isUserGenerated = false;
+        this._message = '';
     }
-    #clear() {
-        this.#parentEl.innerHTML = '';
-    }
-    #generateMarkup() {
-        return this.#data.map(recipe => this.#createrecipePreview(recipe)).join('');
+
+    _generateMarkup() {
+        return this._data.map(recipe => this.#createrecipePreview(recipe)).join('');
     }
     #createrecipePreview(recipe) {
         return `
@@ -26,7 +25,7 @@ class SearchResultsView {
                 <h4 class="preview__title">${recipe.title}</h4>
                 <p class="preview__publisher">${recipe.publisher}</p>
                 </div>
-                ${this.#isUserGenerated ? `
+                ${this._isUserGenerated ? `
                 <div class="preview__user-generated">
                 <svg>
                     <use href="src/img/icons.svg#icon-user"></use>
@@ -37,21 +36,17 @@ class SearchResultsView {
         </li>
         `
     }
-    displayError(message = this.#errorMessage) {
-        this.#clear();
-        const markup = `
-        <div class="error">
-            <div>
-            <svg>
-                <use href="${icons}.svg#icon-alert-triangle"></use>
-            </svg>
-            </div>
-            <p>${message}</p>
-        </div>
-        `
-        this.#parentEl.insertAdjacentHTML('afterbegin', markup);
+    /* Inherited methods
+        render
+        renderSpinner
+        displayError
+        renderMessage
+        _clear
+ 
 
-    }
+    */
+
+
 
 }
 /* 

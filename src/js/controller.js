@@ -38,6 +38,7 @@ const controlSearchResults = async function () {
   try {
     const query = searchView.getQuery();
     if (!query) return;
+    searchResultsView.renderSpinner();
     await model.loadSearchResults(query);
     if (model.state.searchedRecipes.length === 0)
       throw ('no query found');
