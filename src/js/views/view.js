@@ -4,6 +4,7 @@ export default class view {
     _data;
     _errorMessage;
     _message;
+    _isUserGenerated;
     render(data) {
         this._data = data;
         this._clear();

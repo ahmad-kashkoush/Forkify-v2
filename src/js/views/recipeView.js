@@ -7,6 +7,8 @@ class RecipeView extends View {
         this._parentEl = document.querySelector('.recipe');
         this._errorMessage = "We could not find that recipe. Please try another one!";
         this._message = '';
+        // this._isUserGenerated = true;
+
     }
 
 
@@ -64,9 +66,10 @@ class RecipeView extends View {
             </div>
         
             <div class="recipe__user-generated">
-            <svg>
-                <use href="${icons}#icon-user"></use>
-            </svg>
+            ${this._isUserGenerated ?
+                `<svg>
+                     <use href="${icons}#icon-user"></use>
+              </svg>` : ''}
             </div>
             <button class="btn--round">
             <svg class="">
