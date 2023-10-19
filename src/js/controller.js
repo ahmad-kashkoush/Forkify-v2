@@ -40,10 +40,10 @@ const controlSearchResults = async function () {
     if (!query) return;
     searchResultsView.renderSpinner();
     await model.loadSearchResults(query);
-    if (model.state.searchedRecipes.length === 0)
-      throw ('no query found');
+    // if (model.state.searchedRecipes.length === 0) put it in the render better
+    //   throw ('no query found');
+    searchResultsView.render(model.state.searchedRecipes);//
     console.log(model.state.searchedRecipes);
-    searchResultsView.render(model.state.searchedRecipes)
   } catch (err) {
     searchResultsView.displayError();
 

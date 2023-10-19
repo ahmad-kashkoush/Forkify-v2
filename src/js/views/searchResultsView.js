@@ -1,13 +1,13 @@
 import icons from 'url:../../img/icons.svg'
 import View from './view.js'
 class SearchResultsView extends View {
-    #isUserGenerated;
+
     constructor() {
         super();
         this._parentEl = document.querySelector('ul.results');
         this._data;
         this._errorMessage = 'No recipes found for your query! Please try again ;)'
-        this.#isUserGenerated = false;
+        this._isUserGenerated = false;
         this._message = '';
     }
 

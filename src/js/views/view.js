@@ -4,7 +4,10 @@ export default class view {
     _data;
     _errorMessage;
     _message;
+    _isUserGenerated;
     render(data) {
+        // handle empty data
+        if (!data || (Array.isArray(data) && data.length === 0)) return this.displayError();
         this._data = data;
         this._clear();
         this._parentEl.insertAdjacentHTML('afterbegin', this._generateMarkup());//in child class
