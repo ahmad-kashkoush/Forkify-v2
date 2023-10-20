@@ -1,7 +1,7 @@
 import View from "./view.js";
 import icons from "url:../../img/icons.svg"
 
-class ResultPaiginationView extends View {
+class PaiginationView extends View {
     constructor() {
         super();
         this._parentEl = document.querySelector('.pagination');
@@ -9,14 +9,14 @@ class ResultPaiginationView extends View {
     }
     renderPagination(data, handler) {
         this.render(data);
-        this.addHandlerRender(handler);
+        this.addHandlerClick(handler);
     }
     _generateMarkup() {
+
         const page = this._data.page;
-        // console.log(this._data);
         const markup = `
             ${page - 1 >= 1 ? `
-            <button button class="btn--inline pagination__btn--prev" >
+            <button data-go-to="${page - 1}" class="btn--inline pagination__btn--prev" >
                 <svg class="search__icon">
                      <use href="${icons}.svg#icon-arrow-left"></use>
                 </svg>
@@ -25,7 +25,7 @@ class ResultPaiginationView extends View {
                 : ''}
             ${page + 1 <= this._data.lastPage ?
                 `
-            <button class="btn--inline pagination__btn--next">
+            <button data-go-to="${page + 1}" class="btn--inline pagination__btn--next">
                 <span>Page ${page + 1}</span>
                 <svg class="search__icon">
                     <use href="${icons}.svg#icon-arrow-right"></use>
@@ -37,21 +37,19 @@ class ResultPaiginationView extends View {
         return markup;
     }
 
-    addHandlerRender(handler) {
+    addHandlerClick(handler) {
+        // used event Delegation
+        this._parentEl.addEventListener('click', function (e) {
+            e.preventDefault();
+            const btn = e.target.closest('.btn--inline');
+            if (!btn) return;
+            const goTo = +btn.dataset.goTo;
 
-        if (this._data.page + 1 <= this._data.lastPage) {
-            this._parentEl.querySelector('.pagination__btn--next').addEventListener('click', function (e) {
-                e.preventDefault();
-                handler(this._data.page + 1);
-            }.bind(this))
-        }
-        if (this._data.page - 1 >= 1) {
-            this._parentEl.querySelector('.pagination__btn--prev').addEventListener('click', function (e) {
-                e.preventDefault();
-                handler(this._data.page - 1);
-            }.bind(this))
-        }
+            handler(goTo)
+
+
+        }.bind(this));
     }
 
 }
-export default new ResultPaiginationView();
+export default new PaiginationView();
