@@ -1,8 +1,17 @@
-import { API_URL } from './config.js'
+import { API_URL, RESULTS_PER_PAGE } from './config.js'
 import { getJson } from './helpers.js'
 export const state = {
     recipe: {},
-    searchedRecipes: {},
+    search: {
+        resultsPerPage: RESULTS_PER_PAGE,
+        results: [],
+        page: 1,
+        lastPage: 0,
+
+
+    },
+
+
 }
 const createRecipeObject = function (recipe) {
     return {
@@ -33,12 +42,25 @@ export const loadRecipe = async function (id) {
 export const loadSearchResults = async function (foodName) {
     try {
         const data = await getJson(`${API_URL}?search=${foodName}`);
-        console.log(data);
+
         const { recipes } = data.data;
-        state.searchedRecipes =
-            state.searchedRecipes = recipes.map(recipe => createRecipeObject(recipe));
-        // console.log(state.searchedRecipes);
+
+        state.search.results = recipes.map(recipe => createRecipeObject(recipe));
+        // lastPage
+        state.search.lastPage = Math.ceil(state.search.results.length / state.search.resultsPerPage);
+        console.log(state.search.results);
     } catch (err) {
         throw (err);
     }
+}
+
+export const getSearchResultsPerPage = function (page = state.search.page) {
+    state.search.page = page;
+    const start = (page - 1) * state.search.resultsPerPage;
+    const end = Math.min(page * state.search.resultsPerPage, state.search.results.length);
+
+
+    // console.log(state.search.results.slice(start, end));
+    return state.search.results.slice(start, end);
+
 }

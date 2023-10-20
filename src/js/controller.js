@@ -3,7 +3,8 @@ import * as model from "./model.js"
 import recipeView from './views/recipeView.js';
 import searchResultsView from './views/searchResultsView.js';
 import searchView from './views/searchView.js';
-
+import paginationView from './views/PaginationView.js';
+import icons from "../img/icons.svg"
 
 
 // https://forkify-api.herokuapp.com/v2
@@ -34,24 +35,42 @@ const controlRecipe = async function () {
 
 }
 
+
+
+
+
 const controlSearchResults = async function () {
   try {
     const query = searchView.getQuery();
     if (!query) return;
     searchResultsView.renderSpinner();
     await model.loadSearchResults(query);
-    // if (model.state.searchedRecipes.length === 0) put it in the render better
+    // if (model.state.search.results.length === 0) put it in the render better
     //   throw ('no query found');
-    searchResultsView.render(model.state.searchedRecipes);//
-    console.log(model.state.searchedRecipes);
+    searchResultsView.render(model.getSearchResultsPerPage());
+    paginationView.render(model.state.search);
+
+
   } catch (err) {
     searchResultsView.displayError();
-
+    console.error(err);
   }
 }
+const controlPagination = function (page) {
+  if (page < 1 || page > model.state.search.lastPage)
+    return;
+  searchResultsView.render(model.getSearchResultsPerPage(page))
+  paginationView.render(model.state.search);
+  console.log(model.state.search);
+}
+
+
 // can write in global scope this is better this way
+// controlSearchResults();
 const init = function () {
   recipeView.addHandlerRender(controlRecipe);
   searchView.addHandlerSearch(controlSearchResults);
+  paginationView.addHandlerClick(controlPagination);
+
 }
 init();
