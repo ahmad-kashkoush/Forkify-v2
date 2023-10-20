@@ -36,14 +36,7 @@ const controlRecipe = async function () {
 }
 
 
-///////////////////////////// Pagination
-// this is the callback function
-const controlPagination = function (page = 1) {
-  model.state.search.page = page;
-  searchResultsView.render(model.getSearchResultsPerPage(page));
-  paginationView.renderPagination(model.state.search, controlPagination);
 
-}
 
 
 const controlSearchResults = async function () {
@@ -54,14 +47,22 @@ const controlSearchResults = async function () {
     await model.loadSearchResults(query);
     // if (model.state.search.results.length === 0) put it in the render better
     //   throw ('no query found');
-    controlPagination(1);
+    searchResultsView.render(model.getSearchResultsPerPage());
+    paginationView.render(model.state.search);
+
 
   } catch (err) {
     searchResultsView.displayError();
-    console.err(err);
+    console.error(err);
   }
 }
-
+const controlPagination = function (page) {
+  if (page < 1 || page > model.state.search.lastPage)
+    return;
+  searchResultsView.render(model.getSearchResultsPerPage(page))
+  paginationView.render(model.state.search);
+  console.log(model.state.search);
+}
 
 
 // can write in global scope this is better this way
@@ -69,7 +70,7 @@ const controlSearchResults = async function () {
 const init = function () {
   recipeView.addHandlerRender(controlRecipe);
   searchView.addHandlerSearch(controlSearchResults);
-
+  paginationView.addHandlerClick(controlPagination);
 
 }
 init();

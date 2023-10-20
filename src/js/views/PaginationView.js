@@ -7,10 +7,6 @@ class PaiginationView extends View {
         this._parentEl = document.querySelector('.pagination');
 
     }
-    renderPagination(data, handler) {
-        this.render(data);
-        this.addHandlerClick(handler);
-    }
     _generateMarkup() {
 
         const page = this._data.page;
