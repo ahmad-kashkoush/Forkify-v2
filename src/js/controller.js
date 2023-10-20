@@ -28,6 +28,7 @@ const controlRecipe = async function () {
     await model.loadRecipe(id);
     // render recipe
     recipeView.render(model.state.recipe)
+    // console.log(model.state.recipe);
 
   } catch (err) {
     recipeView.displayError();
@@ -61,16 +62,28 @@ const controlPagination = function (page) {
     return;
   searchResultsView.render(model.getSearchResultsPerPage(page))
   paginationView.render(model.state.search);
-  console.log(model.state.search);
+
 }
 
 
 // can write in global scope this is better this way
 // controlSearchResults();
+const controlServings = function (numOfServings = 1) {
+
+  if (numOfServings < 1) return;
+
+  model.updateServings(numOfServings);
+  recipeView.render(model.state.recipe);
+}
+// controlServings(8)
 const init = function () {
   recipeView.addHandlerRender(controlRecipe);
+  recipeView.addHandlerServings(controlServings)
   searchView.addHandlerSearch(controlSearchResults);
+
   paginationView.addHandlerClick(controlPagination);
+
 
 }
 init();
+
