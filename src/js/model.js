@@ -47,7 +47,7 @@ export const loadSearchResults = async function (foodName) {
 
         state.search.results = recipes.map(recipe => createRecipeObject(recipe));
         // lastPage
-        state.search.lastPage = (state.search.results.length + 9) / 10;// (n+9)/10=ceil(n/10)
+        state.search.lastPage = Math.ceil(state.search.results.length / state.resultsPerPage);
         console.log(state.search.results);
     } catch (err) {
         throw (err);

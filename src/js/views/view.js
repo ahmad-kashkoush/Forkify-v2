@@ -1,5 +1,5 @@
 import icons from "url:../../img/icons.svg"
-export default class view {
+export default class View {
     _parentEl;
     _data;
     _errorMessage;
