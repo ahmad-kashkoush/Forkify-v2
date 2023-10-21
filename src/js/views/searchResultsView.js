@@ -15,9 +15,11 @@ class SearchResultsView extends View {
         return this._data.map(recipe => this.#createrecipePreview(recipe)).join('');
     }
     #createrecipePreview(recipe) {
+        const id = window.location.hash.slice(1);
+        const selected = recipe.id === id;
         return `
         <li class="preview">
-            <a class="preview__link preview__link--active" href="#${recipe.id}">
+            <a class="preview__link ${selected ? 'preview__link--active' : ''}" href="#${recipe.id}">
                 <figure class="preview__fig">
                     <img src="${recipe.imageUrl}" alt="${recipe.title}" />
                 </figure>

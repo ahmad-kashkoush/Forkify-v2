@@ -23,7 +23,17 @@ class RecipeView extends View {
         })
 
     }
-
+    addHandlerServings(handler) {
+        this._parentEl.addEventListener('click', function (e) {
+            e.preventDefault();
+            const btn = e.target.closest('.btn--tiny');
+            if (!btn) return;
+            if (btn.classList.contains('btn--increase-servings'))
+                handler(this._data.servings + 1);
+            else
+                handler(this._data.servings - 1);
+        }.bind(this))
+    }
     // display Message
 
     // Render recipe 
@@ -48,11 +58,11 @@ class RecipeView extends View {
             <svg class="recipe__info-icon">
                 <use href="${icons}#icon-users"></use>
             </svg>
-            <span class="recipe__info-data recipe__info-data--people">4</span>
+            <span class="recipe__info-data recipe__info-data--people">${this._data.servings}</span>
             <span class="recipe__info-text">servings</span>
         
             <div class="recipe__info-buttons">
-                <button class="btn--tiny btn--increase-servings">
+                <button class="btn--tiny btn--decrease-servings">
                 <svg>
                     <use href="${icons}#icon-minus-circle"></use>
                 </svg>
