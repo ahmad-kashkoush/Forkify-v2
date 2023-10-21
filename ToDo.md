@@ -13,3 +13,5 @@
   - [x] Increase `+` button
   - [x] Decrease `-` button
 - [x] on listening I'll render that data again
+
+## Optimize rendering the page
