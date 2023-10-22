@@ -4,6 +4,7 @@ import recipeView from './views/recipeView.js';
 import searchResultsView from './views/searchResultsView.js';
 import searchView from './views/searchView.js';
 import paginationView from './views/PaginationView.js';
+import bookMarkPreview from './views/bookMarkPreview.js';
 
 
 
@@ -77,11 +78,20 @@ const controlServings = function (numOfServings = 1) {
   model.updateServings(numOfServings);
   recipeView.update(model.state.recipe);
 }
+const controlBookMarks = function () {
+  model.addBookmark(model.state.recipe);
+  // make it marked in the recipe view
+  recipeView.update(model.state.recipe);
+  // add recipe preview to bookmarks
+  bookMarkPreview.update(model.state.recipe);
+
+}
+
 // controlServings(8)
 const init = function () {
   recipeView.addHandlerRender(controlRecipe);
   recipeView.addHandlerServings(controlServings);
-
+  recipeView.addHandlerBookMarks(controlBookMarks);
   searchView.addHandlerSearch(controlSearchResults);
 
   paginationView.addHandlerClick(controlPagination);

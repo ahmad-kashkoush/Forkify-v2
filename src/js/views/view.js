@@ -14,6 +14,7 @@ export default class View {
     }
     // ToDO
     update(data) {
+        this._data = data;
         const newMarkup = this._generateMarkup();
 
         const newDom = [...document.createRange().createContextualFragment(newMarkup).querySelectorAll('*')];
@@ -22,10 +23,10 @@ export default class View {
         newDom.forEach((newEl, i) => {
             const curEl = curDom[i];
             // update text;
-            if (!newEl.isEqualNode(curEl) && newEl.firstChild.nodeValue.trim() !== '')
-                curEl.firstChild.nodeValue = newEl.firstChild.nodeValue;
+            if (!newEl.isEqualNode(curEl) && newEl.firstChild?.nodeValue.trim() !== '')
+                curEl.textContent = newEl.textContent;
             if (!newEl.isEqualNode(curEl)) {
-                [...newEl.attributes].forEach(attr => {
+                Array.from(newEl.attributes).forEach(attr => {
                     curEl.setAttribute(attr.name, attr.value);
                 })
             }

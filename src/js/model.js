@@ -8,6 +8,8 @@ export const state = {
         page: 1,
         lastPage: 0,
     },
+    bookmarks: [],
+
 
 
 }
@@ -48,6 +50,7 @@ export const loadSearchResults = async function (foodName) {
         state.search.results = recipes.map(recipe => createRecipeObject(recipe));
         // lastPage
         state.search.lastPage = Math.ceil(state.search.results.length / state.search.resultsPerPage);
+        state.search.page = 1;
         console.log(state.search.results);
     } catch (err) {
         throw (err);
@@ -70,4 +73,13 @@ export const updateServings = function (newServings = state.recipe.servings) {
         return ingredient;
     });
     state.recipe.servings = newServings;
+}
+
+
+export const addBookmark = function (recipe) {
+    // addBookmark;
+    bookmarks.push(recipe);
+    // mark it in the recipe view
+    if (recipe.id === state.recipe.id)
+        state.recipe.bookmarked = true;
 }

@@ -12,9 +12,9 @@ class SearchResultsView extends View {
     }
 
     _generateMarkup() {
-        return this._data.map(recipe => this.#createrecipePreview(recipe)).join('');
+        return this._data.map(recipe => this._createrecipePreview(recipe)).join('');
     }
-    #createrecipePreview(recipe) {
+    _createrecipePreview(recipe) {
         const id = window.location.hash.slice(1);
         const selected = recipe.id === id;
         return `
