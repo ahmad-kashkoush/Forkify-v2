@@ -1,5 +1,6 @@
 import icons from 'url:../../img/icons.svg'
 import View from './view.js'
+import previewView from './previewView.js';
 class SearchResultsView extends View {
 
     constructor() {
@@ -12,32 +13,10 @@ class SearchResultsView extends View {
     }
 
     _generateMarkup() {
-        return this._data.map(recipe => this.#createrecipePreview(recipe)).join('');
+        return this._data.map(recipe => previewView.render(recipe, false)).join('');
     }
-    #createrecipePreview(recipe) {
-        const id = window.location.hash.slice(1);
-        const selected = recipe.id === id;
-        return `
-        <li class="preview">
-            <a class="preview__link ${selected ? 'preview__link--active' : ''}" href="#${recipe.id}">
-                <figure class="preview__fig">
-                    <img src="${recipe.imageUrl}" alt="${recipe.title}" />
-                </figure>
-                <div class="preview__data">
-                <h4 class="preview__title">${recipe.title}</h4>
-                <p class="preview__publisher">${recipe.publisher}</p>
-                </div>
-                ${this._isUserGenerated ? `
-                <div class="preview__user-generated">
-                <svg>
-                    <use href="src/img/icons.svg#icon-user"></use>
-                </svg>
-            </div>`: ''
-            }
-            </a>
-        </li>
-        `
-    }
+
+
     /* Inherited methods
         render
         renderSpinner

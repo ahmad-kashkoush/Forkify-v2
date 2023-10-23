@@ -34,6 +34,15 @@ class RecipeView extends View {
                 handler(this._data.servings - 1);
         }.bind(this))
     }
+
+    addHandlerBookmarks(handler) {
+        this._parentEl.addEventListener('click', function (e) {
+            e.preventDefault();
+            const btn = e.target.closest('.btn--round');
+            if (!btn) return;
+            handler();
+        })
+    }
     // display Message
 
     // Render recipe 
@@ -83,7 +92,7 @@ class RecipeView extends View {
             </div>
             <button class="btn--round">
             <svg class="">
-                <use href="${icons}#icon-bookmark-fill"></use>
+                <use href="${icons}#icon-bookmark${this._data.bookmarked ? '-fill' : ''}"></use>
             </svg>
             </button>
         </div>
@@ -126,6 +135,9 @@ class RecipeView extends View {
             ${ing.description}
         </div>
     </li>`
+    }
+    addHandlerBookMarks(handler) {
+        this._parentEl.querySelector('.btn--round').addEventListener('click', handler);
     }
 
 }
