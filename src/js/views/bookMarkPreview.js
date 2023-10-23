@@ -12,6 +12,9 @@ class BookmarkPreview extends View {
     _generateMarkup() {
         return this._data.map(recipe => previewView.render(recipe, false)).join('');
     }
+    addHandlerRender(handler) {
+        window.addEventListener('load', handler);
+    }
 
 
 

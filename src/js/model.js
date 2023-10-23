@@ -34,6 +34,10 @@ export const loadRecipe = async function (id) {
         // console.log(recipe);
         state.recipe = createRecipeObject(recipe);
 
+
+        state.recipe.bookmarked = state.bookmarks.some(recipe => recipe.id === id);
+
+
         // console.log(state.recipe);
 
     } catch (err) {
@@ -47,7 +51,8 @@ export const loadSearchResults = async function (foodName) {
 
         const { recipes } = data.data;
 
-        state.search.results = recipes.map(recipe => createRecipeObject(recipe));
+        state.search.results = recipes.map(recipe => recipe = createRecipeObject(recipe));
+
         // lastPage
         state.search.lastPage = Math.ceil(state.search.results.length / state.search.resultsPerPage);
         state.search.page = 1;
@@ -76,18 +81,32 @@ export const updateServings = function (newServings = state.recipe.servings) {
 }
 
 
-export const addBookmark = function (recipe) {
+export const toggleBookmark = function (recipe) {
     // addBookmark;
     console.log(recipe);
     // mark it in the recipe view
-    if (recipe.id === state.recipe.id) {
-        if (!state.recipe.bookmarked) {
-            state.recipe.bookmarked = true;
-            state.bookmarks.push(recipe);
-        }
-        else {
-            state.recipe.bookmarked = false;
-            state.bookmarks.splice(state.bookmarks.indexOf(recipe), 1);
-        }
+    if (recipe.id !== state.recipe.id) return;
+    if (!state.recipe.bookmarked) {
+        state.recipe.bookmarked = true;
+        state.bookmarks.push(recipe);
     }
+    else {
+        state.recipe.bookmarked = false;
+        state.bookmarks.splice(state.bookmarks.indexOf(recipe), 1);
+    }
+
+    storeBookmarks();
 }
+// localStorage bookmarks
+
+const storeBookmarks = function () {
+    localStorage.setItem('Bookmarks', JSON.stringify(state.bookmarks))
+}
+const init = function () {
+    const storage = localStorage.getItem('Bookmarks');
+
+    if (storage) state.bookmarks = JSON.parse(storage);
+    // console.log(state.bookmarks);
+
+}
+init();

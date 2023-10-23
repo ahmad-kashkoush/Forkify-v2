@@ -29,13 +29,14 @@ const controlRecipe = async function () {
     // fetching data
     searchResultsView.update(model.getSearchResultsPerPage());
     await model.loadRecipe(id);
+    bookMarkPreview.update(model.state.bookmarks);
     // render recipe
     recipeView.render(model.state.recipe)
-    bookMarkPreview.update(model.state.bookmarks);
     // console.log(model.state.recipe);
 
   } catch (err) {
     recipeView.displayError();
+    console.error(err);
   }
 
 }
@@ -80,16 +81,22 @@ const controlServings = function (numOfServings = 1) {
   recipeView.update(model.state.recipe);
 }
 const controlBookmarks = function () {
-  model.addBookmark(model.state.recipe);
+  model.toggleBookmark(model.state.recipe);
+
   // make it marked in the recipe view
   recipeView.update(model.state.recipe);
   // add recipe preview to bookmarks
   bookMarkPreview.render(model.state.bookmarks);
 
 }
+const handleBookmarks = function () {
+  bookMarkPreview.render(model.state.bookmarks);
+}
 
 // controlServings(8)
 const init = function () {
+
+  bookMarkPreview.addHandlerRender(handleBookmarks);
   recipeView.addHandlerRender(controlRecipe);
   recipeView.addHandlerServings(controlServings);
   recipeView.addHandlerBookmarks(controlBookmarks);
