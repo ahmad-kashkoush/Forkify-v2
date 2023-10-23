@@ -1,39 +1,18 @@
 import View from "./view";
+import previewView from "./previewView.js";
 
 
 class BookmarkPreview extends View {
     constructor() {
         super();
         this._parentEl = document.querySelector('.bookmarks');
+        this._errorMessage = 'No bookmarks yet, find good recipe and bookmark it  :)'
     }
     //Will refactor this part by making a parent Element
     _generateMarkup() {
-        return this._data.map(recipe => this._createrecipePreview(recipe)).join('');
+        return this._data.map(recipe => previewView.render(recipe, false)).join('');
     }
-    _createrecipePreview(recipe) {
-        const id = window.location.hash.slice(1);
-        const selected = recipe.id === id;
-        return `
-        <li class="preview">
-            <a class="preview__link ${selected ? 'preview__link--active' : ''}" href="#${recipe.id}">
-                <figure class="preview__fig">
-                    <img src="${recipe.imageUrl}" alt="${recipe.title}" />
-                </figure>
-                <div class="preview__data">
-                <h4 class="preview__title">${recipe.title}</h4>
-                <p class="preview__publisher">${recipe.publisher}</p>
-                </div>
-                ${this._isUserGenerated ? `
-                <div class="preview__user-generated">
-                <svg>
-                    <use href="src/img/icons.svg#icon-user"></use>
-                </svg>
-            </div>`: ''
-            }
-            </a>
-        </li>
-        `
-    }
+
 
 
 }

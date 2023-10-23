@@ -5,12 +5,19 @@ export default class View {
     _errorMessage;
     _message;
     _isUserGenerated;
-    render(data) {
+    //⭐⭐⭐⭐
+    // render(data, false)-> set data, return generated markup
+    // render(data, true)-> set data, insert in parent element 
+    render(data, render = true) {
         // handle empty data
         if (!data || (Array.isArray(data) && data.length === 0)) return this.displayError();
+
         this._data = data;
+        const markup = this._generateMarkup();
+        // for preview View-> to set data then return generated markup
+        if (!render) return this._generateMarkup();
         this._clear();
-        this._parentEl.insertAdjacentHTML('afterbegin', this._generateMarkup());//in child class
+        this._parentEl.insertAdjacentHTML('afterbegin', markup);//in child class
     }
     // ToDO
     update(data) {
