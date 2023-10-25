@@ -1,5 +1,5 @@
 import { API_URL, RESULTS_PER_PAGE, API_KEY } from './config.js'
-import { getJson, sendJson } from './helpers.js'
+import { AJAX } from './helpers.js'
 export const state = {
     recipe: {},
     search: {
@@ -31,7 +31,7 @@ const createRecipeObject = function (recipe, isUserGenerated) {
 export const loadRecipe = async function (id) {
     try {
 
-        const data = await getJson(`${API_URL}/${id}`);
+        const data = await AJAX(`${API_URL}/${id}?key=${API_KEY}`);
         // updating recipe object
         const { recipe } = data.data;
         // console.log(recipe);
@@ -50,7 +50,7 @@ export const loadRecipe = async function (id) {
 
 export const loadSearchResults = async function (foodName) {
     try {
-        const data = await getJson(`${API_URL}?search=${foodName}`);
+        const data = await AJAX(`${API_URL}?search=${foodName}&key=${API_KEY}`);
 
         const { recipes } = data.data;
 
@@ -94,11 +94,9 @@ export const toggleBookmark = function (recipe) {
         state.bookmarks.push(recipe);
     }
     else {
-        if (!state.recipe.userGenerated) {
+        state.recipe.bookmarked = false;
+        state.bookmarks.splice(state.bookmarks.indexOf(recipe), 1);
 
-            state.recipe.bookmarked = false;
-            state.bookmarks.splice(state.bookmarks.indexOf(recipe), 1);
-        }
     }
 
     storeBookmarks();
@@ -130,7 +128,7 @@ export const updateObject = async function (newRecipe) {
             servings: +newRecipe.servings,
             ingredients,
         };
-        const response = await sendJson(`${API_URL}?key=${API_KEY}`, recipe);
+        const response = await AJAX(`${API_URL}?key=${API_KEY}`, recipe);
         const data = response.data.recipe;
         state.recipe = createRecipeObject(data, true);// data, userGenerated
         toggleBookmark(state.recipe);

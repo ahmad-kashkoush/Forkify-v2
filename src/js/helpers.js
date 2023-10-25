@@ -7,20 +7,8 @@ const timeOut = function (s) {
     });
 }
 
-export const getJson = async function (url, message = 'something went wrong') {
-    try {
-        const response = await Promise.race([fetch(url), timeOut(TIMEOUT_SECONDS)]);
-        const data = await response.json();
-        if (!response.ok)
-            throw new Error(`${data.message} (${response.status})`)
 
-        return data;
-    } catch (err) {
-        throw (err);
-    }
-}
-
-export const sendJson = async function (url, uploadData = undefined) {
+export const AJAX = async function (url, uploadData = undefined) {
     try {
 
         const response = uploadData ? fetch(url, {

@@ -101,6 +101,11 @@ const controlUpload = async function (data) {
     recipeView.render(model.state.recipe);
     uploadRecipeView.renderMessage();
 
+    // add this recipe to the bookmarks
+    bookMarkPreview.render(model.state.recipe.bookmarks);
+
+    // change Id without uploading the whole page
+    window.history.pushState(null, '', `#${model.state.recipe.id}`)
     // close form window
     setTimeout(function () {
       uploadRecipeView.toggleWindow();
