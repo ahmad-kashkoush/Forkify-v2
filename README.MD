@@ -10,7 +10,7 @@ https://forkify-v2-peach.vercel.app/
 
 - [Overview](#overview)
   - [The challenge](#the-challenge)
-  - [video demo](#video-demo)
+  - [Demos](#Demos)
 - [My process](#my-process)
   - [Built with](#built-with)
   - [What I learned](#what-i-learned)
@@ -27,9 +27,12 @@ Users should be able to:
 - Bookmark recipes in case he wants to come back later
 - get quantities of ingredients based on number of servings
 
-### Video Demo
+### Demos
 
-![Forkify video](Forkify.webm)
+- Video Demo Link =>
+  https://drive.google.com/file/d/1VHXiqJ9wB70cZnais7dbp3t4BXI1Ir7q/view?usp=sharing
+
+- Screenshot ![Forkify Image](image.png)
 
 ## My process
 
