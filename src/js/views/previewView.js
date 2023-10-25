@@ -1,3 +1,5 @@
+import { API_KEY } from "../config";
+import icons from "url:../../img/icons.svg";
 import View from "./view";
 
 class PreviewView extends View {
@@ -16,10 +18,10 @@ class PreviewView extends View {
                 <h4 class="preview__title">${this._data.title}</h4>
                 <p class="preview__publisher">${this._data.publisher}</p>
                 </div>
-                ${this._isUserGenerated ? `
+                ${API_KEY === this._data.key ? `
                 <div class="preview__user-generated">
                 <svg>
-                    <use href="src/img/icons.svg#icon-user"></use>
+                    <use href="${icons}.svg#icon-user"></use>
                 </svg>
             </div>`: ''
             }
