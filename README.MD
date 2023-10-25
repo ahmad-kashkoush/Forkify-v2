@@ -29,7 +29,7 @@ Users should be able to:
 
 ### Video Demo
 
-<video src="Forkify.mp4" controls title="Title"></video>
+![Forkify video](Forkify.webm)
 
 ## My process
 
