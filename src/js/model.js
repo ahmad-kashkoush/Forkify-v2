@@ -1,5 +1,5 @@
-import { API_URL, RESULTS_PER_PAGE } from './config.js'
-import { getJson } from './helpers.js'
+import { API_URL, RESULTS_PER_PAGE, API_KEY } from './config.js'
+import { getJson, sendJson } from './helpers.js'
 export const state = {
     recipe: {},
     search: {
@@ -13,7 +13,7 @@ export const state = {
 
 
 }
-const createRecipeObject = function (recipe) {
+const createRecipeObject = function (recipe, isUserGenerated) {
     return {
         title: recipe.title,
         id: recipe.id,
@@ -22,9 +22,12 @@ const createRecipeObject = function (recipe) {
         publisher: recipe.publisher,
         servings: recipe.servings,
         cookingTime: recipe.cooking_time,
-        ingredients: recipe.ingredients
+        ingredients: recipe.ingredients,
+        userGenerated: isUserGenerated,
+        ...(recipe.key && ({ key: recipe.key })),
     }
 }
+
 export const loadRecipe = async function (id) {
     try {
 
@@ -91,13 +94,52 @@ export const toggleBookmark = function (recipe) {
         state.bookmarks.push(recipe);
     }
     else {
-        state.recipe.bookmarked = false;
-        state.bookmarks.splice(state.bookmarks.indexOf(recipe), 1);
+        if (!state.recipe.userGenerated) {
+
+            state.recipe.bookmarked = false;
+            state.bookmarks.splice(state.bookmarks.indexOf(recipe), 1);
+        }
     }
 
     storeBookmarks();
 }
-// localStorage bookmarks
+
+// update object coming from submit
+
+export const updateObject = async function (newRecipe) {
+    try {
+
+        const ingredients = Object.entries(newRecipe)
+            .filter(entry => entry[0].startsWith('ingredient') && entry[1] != '')
+            .map(ing => {
+                const ingArr = ing[1].replaceAll(' ', '').split(',');
+                if (ingArr.length !== 3)
+                    throw new Error(
+                        'Wrong ingredient format! Please use the correct format :)'
+                    );
+
+                const [quantity, unit, description] = ingArr;
+                return { quantity: quantity ? +quantity : null, unit, description };
+            });
+        const recipe = {
+            title: newRecipe.title,
+            source_url: newRecipe.sourceUrl,
+            image_url: newRecipe.image,
+            publisher: newRecipe.publisher,
+            cooking_time: +newRecipe.cookingTime,
+            servings: +newRecipe.servings,
+            ingredients,
+        };
+        const response = await sendJson(`${API_URL}?key=${API_KEY}`, recipe);
+        const data = response.data.recipe;
+        state.recipe = createRecipeObject(data, true);// data, userGenerated
+        toggleBookmark(state.recipe);
+    } catch (err) {
+        throw (err);
+    }
+
+}
+
 
 const storeBookmarks = function () {
     localStorage.setItem('Bookmarks', JSON.stringify(state.bookmarks))

@@ -5,7 +5,8 @@ import searchResultsView from './views/searchResultsView.js';
 import searchView from './views/searchView.js';
 import paginationView from './views/PaginationView.js';
 import bookMarkPreview from './views/bookMarkPreview.js';
-
+import uploadRecipeView from './views/uploadRecipeView.js';
+import { MODAL_CLOSE_SEC } from './config.js';
 
 
 
@@ -19,7 +20,6 @@ import bookMarkPreview from './views/bookMarkPreview.js';
 // render spinner
 
 
-const apiKey = `bd8a8c43-7123-4d6c-ae61-dce616b99af4`;
 const controlRecipe = async function () {
 
   try {
@@ -89,9 +89,36 @@ const controlBookmarks = function () {
   bookMarkPreview.render(model.state.bookmarks);
 
 }
+const controlUpload = async function (data) {
+  try {
+    uploadRecipeView.renderSpinner();
+
+    // console.log(data);
+    await model.updateObject(data);
+    console.log(model.state.recipe);
+
+    // render it on the page
+    recipeView.render(model.state.recipe);
+    uploadRecipeView.renderMessage();
+
+    // close form window
+    setTimeout(function () {
+      uploadRecipeView.toggleWindow();
+    }, MODAL_CLOSE_SEC * 1000)
+
+
+  } catch (err) {
+    console.error('💣💣', err);
+    uploadRecipeView.displayError(err.message);
+  }
+
+}
+
+
 const handleBookmarks = function () {
   bookMarkPreview.render(model.state.bookmarks);
 }
+
 
 // controlServings(8)
 const init = function () {
@@ -106,6 +133,8 @@ const init = function () {
   searchView.addHandlerSearch(controlSearchResults);
 
   paginationView.addHandlerClick(controlPagination);
+
+  uploadRecipeView.addHandlerUpload(controlUpload);
 
 
 }
