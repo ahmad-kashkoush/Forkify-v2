@@ -19,3 +19,24 @@ export const getJson = async function (url, message = 'something went wrong') {
         throw (err);
     }
 }
+
+export const sendJson = async function (url, uploadData = undefined) {
+    try {
+
+        const response = uploadData ? fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(uploadData),
+        }) : fetch(url);
+        const res = await Promise.race([response, timeOut(TIMEOUT_SECONDS)]);
+        const data = await res.json();
+        if (!res.ok) throw new Error(`${data.message}, (${res.status})`);
+        return data;
+    } catch (err) {
+        console.error(err);
+        throw (err);
+    }
+
+}
